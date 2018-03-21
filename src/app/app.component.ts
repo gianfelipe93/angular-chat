@@ -22,6 +22,7 @@ export class AppComponent {
   posts: any;
   title: string;
   content: string;
+  singlePost: Post;
   postDoc: AngularFirestoreDocument<Post>;
   post: Post;
 
@@ -30,8 +31,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    //this.postCollection = this.afs.collection("posts", ref => ref.where('title', '==', 'test'))
     this.postCollection = this.afs.collection("posts")
-    //this.posts = this.postCollection.valueChanges();
     this.posts = this.postCollection.snapshotChanges()
       .map(actions => {
         return actions.map(action => {
@@ -52,6 +53,9 @@ export class AppComponent {
       this.post = doc
       console.log(this.post)
     })
-    
+  }
+
+  deletePost(id) {
+    this.afs.doc(`posts/${id}`).delete();
   }
 }
